@@ -10,7 +10,7 @@ module EasyAuth::Password::Models::Identity
   #
   # @param [Boolean] value
   def remember=(value)
-    @remember = ::ActiveRecord::Type::Boolean.new.type_cast_from_database(value)
+    @remember = ::ActiveRecord::Type::Boolean.new.cast(value)
   end
 
   # Generates a new remember token and updates it on the identity record
