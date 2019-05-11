@@ -1,7 +1,7 @@
 module EasyAuth::Controllers::PasswordReset
   def self.included(base)
     base.instance_eval do
-      before_filter :find_account_from_reset_token, :only => [:edit, :update]
+      before_action :find_account_from_reset_token, :only => [:edit, :update]
     end
   end
 
