@@ -54,14 +54,14 @@ module EasyAuth::Password::Models::Account
 
   def can_update_password_identities?
     password.present? || identity_uid_attributes.detect do |attribute|
-      send("#{attribute}_changed?") && password_identities.where(password_identities.arel_table[:uid].matches(send("#{attribute}_was"))).first
+      send("saved_change_to_#{attribute}?") && password_identities.where(password_identities.arel_table[:uid].matches(send("#{attribute}_before_last_save"))).first
     end
   end
 
   def update_password_identities
     identity_uid_attributes.each do |attribute|
-      if send("#{attribute}_changed?")
-        identity = password_identities.find { |identity| identity.uid =~ match(send("#{attribute}_was")) }
+      if send("saved_change_to_#{attribute}?")
+        identity = password_identities.find { |identity| identity.uid =~ match(send("#{attribute}_before_last_save")) }
       else
         identity = password_identities.find { |identity| identity.uid =~ match(send(attribute)) }
       end
